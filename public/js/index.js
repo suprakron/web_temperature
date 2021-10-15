@@ -1,401 +1,314 @@
-// For example on how to intiate graphs, or if you want to mess around with the data / style of these graphs, check the bottom of this panel.
-
-(function ($) {
-
-    $.fn.graphiq = function (options) {
-
-        // Default options
-        var settings = $.extend({
-            data: {},
-            colorLine: "#d3a2ef",
-            colorDot: "#c3ecf7",
-            colorXGrid: "#7f7f7f",
-            colorYGrid: "#7f7f7f",
-            colorLabels: "#FFFFFF",
-            colorUnits: "#FFFFFF",
-            colorRange: "#FFFFFF",
-            colorFill: "#533c68",
-            colorDotStroke: "#FFFFFF",
-            dotStrokeWeight: 0,
-            fillOpacity: 0.25,
-            rangeOpacity: 0.5,
-            dotRadius: 3,
-            lineWeight: 2,
-            yLines: true,
-            dots: true,
-            xLines: true,
-            xLineCount: 5,
-            fill: true,
-            height: 100,
-            fluidParent: null
-        }, options);
-
-        var values = [];
-        var entryDivision;
-        var dataRange = settings.height + settings.dotRadius;
-        var parent = this;
-        var maxVal;
-        var scaleFactor = settings.height / 100;
-        var pathPoints = "";
-        for (var key in settings.data) {
-            values.push(settings.data[key]);
-        }
-
-        parent.append(
-            '<div class="graphiq__graph-values"></div><div class="graphiq__graph-layout"><svg class="graphiq__graph" viewBox="0 0 960 '+ (settings.height + 10) +'" shape-rendering="geometricPrecision"><path fill="'+ settings.colorFill +'" style="opacity: '+ settings.fillOpacity +'" class="graphiq__fill-path" d="" stroke-width="0" stroke="#000" fill="cyan"/></svg><div class="graphiq__graph-key"></div></div>'
-        );
-            if (settings.fluidParent) {
-                this.closest(".col").css("overflow", "auto");
-            }
-        parent.addClass('graphiq');
-
-        var graph = this.find(".graphiq__graph");
-
-        // Get data from table
-        for (var key in settings.data) {
-            this.find(".graphiq__graph-key").append('<div class="key" style="color: ' + settings.colorLabels + '">' + key + "</div>");
-        }
-
-        maxVal = Math.max.apply(Math, values);
-
-
-        this.find('.graphiq__graph-values').append('<span style="color: ' + settings.colorRange + '; opacity: ' + settings.rangeOpacity + '">' + maxVal + '</span><span style="color: ' + settings.colorRange + '; opacity: ' + settings.rangeOpacity + '" >0</span>');
-
-
-
-        // Set even spacing in the graph depending on amount of data
-
-        var width = parent.find(".graphiq__graph-layout").width();
+$(function () {
+    $('#chart').highcharts({
+        credits: {
+              enabled: false
+        },
+        chart: {
+          type: 'area',
+          marginRight: 40,
+          spacingLeft: 40,
+          spacingBottom: 50
+        },
         
-        if (settings.xLines) {
-            unitLines(width, maxVal);
-        }
-
-        layoutGraph(width, true);
-
-        $(window).on("resize", function () {
-            pathPoints = "";
-            width = parent.find(".graphiq__graph-layout").width();
-            layoutGraph(width, false);
-        });
-
-       // buildFillPath();
-   
-        function percentageOf(max, current) {
-            return (current / max * 100) * scaleFactor;
-        }
-
-        function layoutGraph(width, initial) {
-            graph.attr({
-                viewBox: "0 0 " + width + " " + (settings.height + 10),
-                width: width
-            });
-            entryDivision = width / (values.length - 1);
-            getCoordinates(initial, entryDivision);
-        }
-
-        function getCoordinates(initial, entryDivision) {
-
-
-            for (i = 0; i < values.length; i++) {
-           
-                var offset;
-       
-                if (i == 0) {
-                    offset = (settings.dotRadius + (settings.dotStrokeWeight)) + 1;
-                } 
-            
-                 else if (i == values.length - 1) {
-                    offset = ((settings.dotRadius + (settings.dotStrokeWeight )) * -1) - 1;
-                } else {
-                    offset = 0;
-                }
-           
-                var lineOffset = i == values.length - 2 ? (settings.dotRadius + (settings.dotStrokeWeight)) / 2 : 0;
-
-                let nextI = i + 1;
-                let xAxis = (entryDivision * i) + offset;
-                let xAxis2 = entryDivision * nextI;
-                
-                console.log(offset);
-           
-
-                let yAxis = dataRange - percentageOf(maxVal, values[i]);
-
-                let yAxis2 = dataRange - percentageOf(maxVal, values[nextI]);
-
-                if (i == values.length - 1) {
-                    yAxis2 = yAxis;
-                    xAxis2 = xAxis;
-                }
-
-              pathPoints += " L " + xAxis + " " + yAxis;
-             
-
-                if (i == values.length - 1 && settings.fill) {
-                    buildFillPath(pathPoints);
-                }
-
-                if (initial) {
-
-                    if (settings.yLines) {
-
-                    $(document.createElementNS("http://www.w3.org/2000/svg", "line"))
-                        .attr({
-                            class: "graphiq__y-division",
-                            x1: xAxis,
-                            y1: yAxis,
-                            x2: xAxis,
-                            y2: settings.height + 5,
-                            stroke: settings.colorYGrid,
-                            "stroke-dasharray": "5 6",
-                            "stroke-width": 1
-                        })
-                        .prependTo(graph);
+        xAxis: {
+            lineColor: '#eeeeee',
+            categories: ['18. Sep', '19. Sep', '20. Sep', '21. Sep', '22. Sep', '23. Sep', '24. Sep', '25. Sep'],
+            labels: {
+              style: {
+                  color: '#999999'
+              },
+              y: 35
+            },
+            tickColor: '#eeeeee',
+            tickmarkPlacement: 'on'
+        },
+        yAxis: {
+            gridLineColor: '#eeeeee',
+            title: {
+                text: false
+            },
+            min: -50,
+            max: 400,
+            tickInterval: 50,
+            labels: {
+              style: {
+                  color: '#999999',
+                  fontSize: '9px'
+              }
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            backgroundColor: 'white',
+            borderColor: null,
+            borderWidth: null
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'left',
+            verticalAlign: 'top',
+            symbolHeight: 11,
+            symbolWidth: 11,
+            symbolPadding: 10,
+            borderWidth: 0,
+            y: -10,
+            x: -15,
+            padding: 15,
+            itemDistance: 35,
+            itemMarginTop: 10,
+            itemMarginBottom: 5,
+            itemStyle: { 
+              color: "#2D282A",
+              fontSize: 12,
+              fontWeight: 'normal'
+            }
+        },
+        plotOptions: {
+            area: {
+              lineWidth: 0,
+              marker: {
+                symbol: 'circle'
+              }
+            },
+            series: {
+              fillOpacity: 0.1,
+              stickyTracking: false,
+              states: {
+                    hover: {
+                        halo: {
+                            size: 8
+                        }
 
                     }
-
-                    // Draw the line
-                    
-
-                    $(document.createElementNS("http://www.w3.org/2000/svg", "line"))
-                        .attr({
-                            class: "graphiq__line",
-                            x1: xAxis ,
-                            y1: yAxis,
-                            x2: xAxis2 - lineOffset,
-                            y2: yAxis2 + (settings.dotStrokeWeight / 2),
-                            stroke: settings.colorLine,
-                            "stroke-width": settings.lineWeight,
-                            "vector-effect": "non-scaling-stroke"
-                        }).appendTo(graph);
-
-                    // Draw the circle
-
-               
-                    $(document.createElementNS("http://www.w3.org/2000/svg", "circle"))
-                        .attr({
-                            class: "graphiq__graph-dot",
-                            cx: xAxis,
-                            cy: yAxis + (settings.dotStrokeWeight / 2),
-                            r: settings.dots ? settings.dotRadius : 0,
-                            fill: settings.colorDot,
-                            stroke: settings.colorDotStroke,
-                            "stroke-width": settings.dotStrokeWeight,
-                            "data-value": values[i],
-                            "vector-effect": "non-scaling-stroke"
-                        })
-                        .appendTo(graph);
-                    
-
-                    // Resize instead of draw, used in resize
-                } else {
-
-                    parent.find(".graphiq__graph-dot")
-                        .eq(i)
-                        .attr({
-                            cx: xAxis,
-                        });
-                    parent.find(".graphiq__line")
-                        .eq(i)
-                        .attr({
-                            x1: xAxis,
-                            x2: xAxis2 - lineOffset,
-                        });
-                    parent.find(".graphiq__y-division")
-                        .eq(values.length - i - 1)
-                        .attr({
-                            x1: xAxis,
-                            x2: xAxis
-                        });
-                    parent.find(".graphiq__x-line").each(function () {
-                        $(this).attr({
-                            x2: width
-                        });
-                    });
                 }
             }
-        }
+        },
+        series: [{
+            name: 'Total Visits',
+            data: [300, 250, 250, 150, 200, 50, 300, 300],
+            color: '#D64857',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-red.svg)'
+            },
+        }, {
+            name: 'Facebook',
+            data: [0, 25, 0, 0, 0, 0, 50, 0],
+            color: '#6693E5',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-facebook.svg)'
+            }
+        }, {
+            name: 'Twitter',
+            data: [30, 0, 0, 0, 0, 0, 0, 25],
+            color: '#7DCAFD',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-twitter.svg)'
+            }
+        }, {
+            name: 'Tumblr',
+            data: [0, 10, 0, 0, 0, 0, 0, 50],
+            color: '#115EA3',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-tumblr.svg)'
+            }
+        }, {
+            name: 'Pinterest',
+            data: [260, 210, 250, 60, 200, 30, 250, 210],
+            color: '#FD7177',
+            marker: {
+              height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-pinterest.svg)'
+            }
+        }, {
+            name: 'Linkedin',
+            data: [0, 0, 0, 0, 0, 0, 0, 0],
+            color: '#727272',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-linkedin.svg)'
+            }
+        }, {
+            name: 'Instagram',
+            data: [0, 0, 0, 0, 0, 0, 0, 0],
+            color: '#d79e64',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-instagram.svg)'
+            }
+        }]
+    });
+});
 
-        function buildFillPath(pathPoints) {
-          
-          parent.find('.graphiq__fill-path').attr("d", "M  " + (4 + settings.dotStrokeWeight) + " " + (settings.height + 5 + settings.dotStrokeWeight) + pathPoints +  " L " + (width - settings.dotRadius - settings.dotStrokeWeight) + " " + (settings.height + 5 + settings.dotStrokeWeight))
-        }
-
-        function unitLines(width, maxVal) {
-            // Draw the max line
-
-            var iteration = 100 / (settings.xLineCount - 1);
-
-
-                for (i=0; i < settings.xLineCount; i++) {
-
-                        $(document.createElementNS("http://www.w3.org/2000/svg", "line"))
-                        .attr({
-                            class: "graphiq__x-line",
-                            y1: iteration * i + (settings.dotRadius + settings.dotStrokeWeight),
-                            x2: width,
-                            y2: iteration * i +  (settings.dotRadius + settings.dotStrokeWeight),
-                            stroke: settings.colorXGrid,
-                            // "stroke-dasharray": "5 6",
-                            "stroke-width": 1
-                        })
-                        .prependTo(graph);
-
-                }
- 
-        }
-
-        parent.hover(function () {
+function mounth(){
+    $('#chart2').highcharts({
+        credits: {
+              enabled: false
+        },
+        chart: {
+          type: 'area',
+          marginRight: 40,
+          spacingLeft: 40,
+          spacingBottom: 50
+        },
         
-            $(this).find('.graphiq__graph-dot').each(function (index) {
-                $('body').append('<span style="color: '+ settings.colorUnits +'" class="graphiq__value-dialog value-' + index + '">' + $(this).attr("data-value") + '</span>');
-                $('.value-' + index).css({
-                    top: $(this).position().top - 20,
-                    left: $(this).position().left - ($('.value-' + index).outerWidth() / 2) + 3
-                })
-            })
-        }, function () {
-            $('.graphiq__value-dialog').remove();
-        })
+        xAxis: {
+            lineColor: '#eeeeee',
+            categories: ['18. Sep', '19. Sep', '20. Sep', '21. Sep', '22. Sep', '23. Sep', '24. Sep', '25. Sep'],
+            labels: {
+              style: {
+                  color: '#999999'
+              },
+              y: 35
+            },
+            tickColor: '#eeeeee',
+            tickmarkPlacement: 'on'
+        },
+        yAxis: {
+            gridLineColor: '#eeeeee',
+            title: {
+                text: false
+            },
+            min: -50,
+            max: 400,
+            tickInterval: 50,
+            labels: {
+              style: {
+                  color: '#999999',
+                  fontSize: '9px'
+              }
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            backgroundColor: 'white',
+            borderColor: null,
+            borderWidth: null
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'left',
+            verticalAlign: 'top',
+            symbolHeight: 11,
+            symbolWidth: 11,
+            symbolPadding: 10,
+            borderWidth: 0,
+            y: -10,
+            x: -15,
+            padding: 15,
+            itemDistance: 35,
+            itemMarginTop: 10,
+            itemMarginBottom: 5,
+            itemStyle: { 
+              color: "#2D282A",
+              fontSize: 12,
+              fontWeight: 'normal'
+            }
+        },
+        plotOptions: {
+            area: {
+              lineWidth: 0,
+              marker: {
+                symbol: 'circle'
+              }
+            },
+            series: {
+              fillOpacity: 0.1,
+              stickyTracking: false,
+              states: {
+                    hover: {
+                        halo: {
+                            size: 8
+                        }
 
-    };
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Total Visits',
+            data: [300, 250, 250, 150, 200, 50, 300, 300],
+            color: '#D64857',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-red.svg)'
+            },
+        }, {
+            name: 'Facebook',
+            data: [0, 25, 0, 0, 0, 0, 50, 0],
+            color: '#6693E5',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-facebook.svg)'
+            }
+        }, {
+            name: 'Twitter',
+            data: [30, 0, 0, 0, 0, 0, 0, 25],
+            color: '#7DCAFD',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-twitter.svg)'
+            }
+        }, {
+            name: 'Tumblr',
+            data: [0, 10, 0, 0, 0, 0, 0, 50],
+            color: '#115EA3',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-tumblr.svg)'
+            }
+        }, {
+            name: 'Pinterest',
+            data: [260, 210, 250, 60, 200, 30, 250, 210],
+            color: '#FD7177',
+            marker: {
+              height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-pinterest.svg)'
+            }
+        }, {
+            name: 'Linkedin',
+            data: [0, 0, 0, 0, 0, 0, 0, 0],
+            color: '#727272',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-linkedin.svg)'
+            }
+        }, {
+            name: 'Instagram',
+            data: [0, 0, 0, 0, 0, 0, 0, 0],
+            color: '#d79e64',
+            marker: {
+                            height: 10,
+              width: 10,
+                symbol: 'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/252775/graph-instagram.svg)'
+            }
+        }]
+    });
+};
 
-}(jQuery));
 
-// Initiate graphs
-
-  var songs = {
-  "Mon" : 80,
-  "Tues": 40,
-  "Wed" : 60,
-  "Thu" : 80,
-  "Fri": 40,
-  "Sat" : 60,
-
-   };
-
-var coffees = {
-  "Mon" : 3,
-  "Tues": 2,
-  "Wed" : 3,
-  "Thu" : 2,
-  "Fri" : 1.5,
-  "Sat" : 1,
-  "Sun" : 2
-   };
-
-var cats = {
-    "10/12" : 1,
-    "10/13" : 4,
-    "10/14" : 15,
-    "10/15" : 27,
-    "10/16" : 48,
-    "10/17" : 34,
-    "10/18" : 12,
-}
-
-var reddit = {
-    "10/12" : 3.5,
-    "10/13" : 2.3,
-    "10/14" : 2,
-    "10/15" : 1.5,
-    "10/16" : 3,
-    "10/17" : 4,
-    "10/18" : 7,
-}
-
-var feature = {
-    "1am" : 20,
-    "2am" : 15,
-    "3am" : 26,
-    "4am" : 23,
-    "5am" : 36,
-    "6am" : 48,
-    "7am" : 89,
-    "8am" : 109,
-    "9am" : 140,
-    "10am" : 162,
-    "11am" : 173,
-    "12pm" : 201
-}
-
-
-$('.graph-songs').graphiq({
-    data: songs,
-    fluidParent: ".col",
-    height: 100,
-    xLineCount: 5,
-    dotRadius: 4,
-    yLines: true,
-    xLines: true,
-    dots: true,
-    fillOpacity: 0.5,
-    fill: true,
-    colorUnits: "#c3ecf7"
-  });
-
-  $('.graph-coffees').graphiq({
-    data: coffees,
-    fluidParent: ".col",
-    height: 100,
-    xLineCount: 3,
-    dotRadius: 5,
-    yLines: true,
-    xLines: true,
-    dots: true,
-    colorLine: "#d3d1b1",
-    colorDot: "#726d60",
-    colorXGrid: "#634e1b",
-    colorUnits: "#d3d1b1",
-    colorFill: "#3a2f23",
-    dotStrokeWeight: 3,
-
-  });
-
-    $('.graph-cats').graphiq({
-    data: cats,
-    fluidParent: ".col",
-    yLines: false,
-    xLines: false,
-    dots: false,
-    colorLine: "#efede5",
-    colorLabels: "#efede5",
-    fill: false
-  });
-
-      $('.graph-hours').graphiq({
-    data: reddit,
-    fluidParent: ".col",
-    height: 100,
-    xLineCount: 2,
-    dotRadius: 5,
-    yLines: false,
-    xLines: true,
-    dots: true,
-    colorLine: "#2F9C95",
-    colorDot: "#A3F7B5",
-    colorXGrid: "#788476",
-    colorUnits: "#A3F7B5",
-    colorFill: "#2a4151"
-  });
-
-$('.graph-feature').graphiq({
-    data: feature,
-    fluidParent: ".col",
-    colorFill: "#0B4F6C",
-  colorRange: "#0B4F6C",
-  colorLabels: "#0B4F6C",
-    colorLine: "#145C9E",
-    fillOpacity: 0.6,
-    yLines: false,
-    xLineCount: 2,
-    dotRadius: 2,
-    colorUnits: "#8ecde2",
-    lineWeight: 0,
-    dots: false,
-    colorDot: "#ffc744",
-    colorYGrid: "#041e28",
-    colorXGrid: "#eeeeee",
-    height: 180
-})
+ 
