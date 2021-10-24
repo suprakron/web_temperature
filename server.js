@@ -5,7 +5,7 @@ const fs = require('fs');
 var bodyParser = require('body-parser');
 var path = require('path');
 mongoose.connect("mongodb://localhost/Temp").then(() => {console.log("db connectting")}).catch((error) => {throw error})  //ใส่เพื่อให้มันรันได้ผ่าน port 
-const temp = require("./models/temp") 
+const temp = require("./models/temps") 
 const app = express();
 // app.use(cors());
 
@@ -16,7 +16,7 @@ app.get('/', async (req,res) =>{
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/temp', async (req, res) => {
+app.get('/temps', async (req, res) => {
     let temp =  await Temp.find({});
     res.send(temp);
 });
