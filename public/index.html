@@ -56,9 +56,64 @@ h1 {
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <!--<script src="/index.js"></script>-->  
-    <script>
+    
+    
+    
+    
+    
+<script>
 
-let labels1 = ['00.00', '00.15','00.30','00.45','01.00','01.15','01.30','01.45','02.00','02.15','02.30','02.45','03.00','03.15','03.30','03.45','04.00','04.15','04.30','04.45','05.00'];
+let result = [];
+let index = 0;
+let index2 = 0;
+let index3 = 0;
+
+let d = 7208;
+
+
+function gendata(){
+fetch('http://localhost:4000/temps')
+    .then(function(response){
+        return response.json()
+    })
+
+.then(function (data){
+    console.log(data);
+    result = data
+
+    let count = index + 20
+    let temp = []
+    let date = []
+
+    let temp2 = []
+    let date2 = []
+
+    let temp3 = []
+    let date3 = []
+
+    for(index; index < count; index++){
+        if(index === result.length){break;}
+        temp.push(result[index].temp);
+        data.push(result[index].date);
+    }
+
+    for(index2; index2 < count; index2++){
+        if (index2 * d >= result.length){break;}
+        temp2.push(result[index2 * d].temp);
+        date2.push(result[index2 * d].date);
+
+    }
+
+    for(index3; index3 < count; index3++){
+        if (index3 * d >= result.length){break;}
+        temp3.push(result[index3 * d].temp);
+        date3.push(result[index3 * d].date);
+
+    }
+
+
+
+    let labels1 = ['00.00', '00.15','00.30','00.45','01.00','01.15','01.30','01.45','02.00','02.15','02.30','02.45','03.00','03.15','03.30','03.45','04.00','04.15','04.30','04.45','05.00'];
 let data1 =  [83, 67, 66, 61, 47, 187,200,250,300];
 let colors1 = ['#49A9EA', '#36CAAB'];
 
@@ -80,9 +135,6 @@ let chart1 = new Chart(myDoughnutChart, {
         }
     }
 });
-
- 
-
 
 let labels3 = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday','Sunday','Saturday'];
 let myChart3 = document.getElementById("myChart3").getContext('2d');
@@ -120,6 +172,7 @@ let chart3 = new Chart(myChart3, {
     }
 });
 
+
 let labels4 = ['Week1', 'Week2', 'Week3', 'Week4' ];
 let data4 = [83, 67, 66, 61, 47, 187];
 let colors4 = ['#49A9EA', '#36CAAB', '#34495E', '#B370CF', '#AC5353', '#CFD4D8'];
@@ -141,7 +194,13 @@ let chart4 = new Chart(myChart4, {
             display: true
         }
     }
-});
+   });
+
+
+      });
+
+
+    }
 
     </script>
   </body>
