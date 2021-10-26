@@ -69,6 +69,8 @@ let index2 = 0;
 let index3 = 0;
 
 let d = 7208;
+let h = 7208 * 4;
+gendata()
 
 
 function gendata(){
@@ -81,7 +83,7 @@ fetch('http://localhost:4000/temps')
     console.log(data);
     result = data
 
-    let count = index + 20
+    let count = index + 100
     let temp = []
     let date = []
 
@@ -114,25 +116,31 @@ fetch('http://localhost:4000/temps')
 
 
     let labels1 = ['00.00', '00.15','00.30','00.45','01.00','01.15','01.30','01.45','02.00','02.15','02.30','02.45','03.00','03.15','03.30','03.45','04.00','04.15','04.30','04.45','05.00'];
-let data1 =  [83, 67, 66, 61, 47, 187,200,250,300];
-let colors1 = ['#49A9EA', '#36CAAB'];
+let data1 =  [83, 67, 66, 61, 47, 187,200,250,300,187,200,250,300];
+let d1 = temp;
+let colors1 = ['#49A9EA', '#36CAAB','#36CAAB','#36CAAB'];
 
 let myDoughnutChart = document.getElementById("myChart").getContext('2d');
 
 let chart1 = new Chart(myDoughnutChart, {
     type: 'line',
     data: {
-        labels: ['00.00', '00.15','00.30','00.45','01.00','01.15','01.30','01.45','02.00','02.15','02.30','02.45','03.00','03.15','03.30','03.45','04.00','04.15','04.30','04.45','05.00'],
+        labels: date ,         //['00.00', '00.15','00.30','00.45','01.00','01.15','01.30','01.45','02.00','02.15','02.30','02.45','03.00','03.15','03.30','03.45','04.00','04.15','04.30','04.45','05.00'],
         datasets: [ {
-            data: [83, 67, 66, 61, 47, 187,200,250,300],
-            backgroundColor: ['#49A9EA', '#36CAAB']
+           
+            backgroundColor: ['#49A9EA', '#36CAAB'],
+            data: data1
         }]
     },
     options: {
         title: {
             text: "Realtime",
             display: true
-        }
+        },
+         series: [{
+            name: 'sales',
+            data:  temp
+          }],
     }
 });
 
@@ -160,7 +168,7 @@ let chart3 = new Chart(myChart3, {
             borderColor: "rgba(255, 99, 132, 1)",
             pointBorderColor: "#fff",
             pointBackgroundColor: "rgba(255, 99, 132, 1)",
-            data: [51, 10, 32, 20, 44]
+            data:  date2
           }
         ]
     },
@@ -182,9 +190,9 @@ let myChart4 = document.getElementById("myChart4").getContext('2d');
 let chart4 = new Chart(myChart4, {
     type: 'line',
     data: {
-        labels: labels4,
+        labels: date3,
         datasets: [ {
-            data: data4,
+            data: temp,
             backgroundColor: colors4
         }]
     },

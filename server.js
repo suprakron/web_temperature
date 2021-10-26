@@ -5,7 +5,7 @@ let cors = require("cors");
 var bodyParser = require('body-parser');
 var path = require('path');
 mongoose.connect("mongodb://localhost/temp").then(() => {console.log("db connect")}).catch((error) => {throw error})  //ใส่เพื่อให้มันรันได้ผ่าน port 
-const temp = require("./models/temp") 
+const Temps = require("./models/temp") 
  
  
  
@@ -19,9 +19,7 @@ app.get('/', async (req,res) =>{
 
 app.get('/temps', async (req, res) => {
  
-    let temp =  await  temp.find({});
- 
- 
+    let temp =  await  Temps.find({});
     res.send(temp);
 });
 
