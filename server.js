@@ -4,8 +4,8 @@ const fs = require('fs');
 let cors = require("cors");
 var bodyParser = require('body-parser');
 var path = require('path');
-mongoose.connect("mongodb://localhost/temp").then(() => {console.log("db connect")}).catch((error) => {throw error})  //ใส่เพื่อให้มันรันได้ผ่าน port 
-const Temps = require("./models/temp") 
+mongoose.connect("mongodb://localhost/Temp").then(() => {console.log("db connect")}).catch((error) => {throw error})  //ใส่เพื่อให้มันรันได้ผ่าน port 
+const Temps = require("./models/temper") 
  
  
  
@@ -14,7 +14,7 @@ app.use(cors());
  
 
 app.get('/', async (req,res) =>{
-    res.sendFile(path.join(__dirname + '/public/index.html'));  //นำข้อมูลมาแสดงที่ไฟล์/public/index.html
+    res.sendFile(path.join(__dirname + '/public/index3.html'));  //นำข้อมูลมาแสดงที่ไฟล์/public/index.html
 });
 
 app.get('/temps', async (req, res) => {
