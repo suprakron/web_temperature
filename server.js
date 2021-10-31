@@ -14,7 +14,7 @@ app.use(cors());
  
 
 app.get('/', async (req,res) =>{
-    res.sendFile(path.join(__dirname + '/public/index3.html'));  //นำข้อมูลมาแสดงที่ไฟล์/public/index.html
+    res.sendFile(path.join(__dirname + '/public/index.html'));  //นำข้อมูลมาแสดงที่ไฟล์/public/index.html
 });
 
 app.get('/temps', async (req, res) => {

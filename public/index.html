@@ -25,29 +25,185 @@ h1 {
   color: #fbe675;
   
 }
+#label1{
+     color: rgb(238, 225, 225);
+}
+#label3{
+     color: rgb(238, 225, 225);
+}
+#label3{
+     color: rgb(238, 225, 225);
+}
+
+@media only screen and (max-width: 1200px) {
+ .chart{
+    text-align: center;
+     margin: auto;
+     width: auto;
+     height: auto;
+ }
+ h1 {
+  text-align: center;
+  margin-bottom: 80px;
+  color: #fbe675;
+  
+}
+#label1{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+#label3{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+#label3{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+.row {
+  margin-bottom: 150px;
+  width: auto;
+  height: auto;
+}
+}
+ 
+
+
+@media only screen and (max-width: 700px) {
+  .chart{
+    text-align: center;
+     margin: auto;
+     width: auto;
+     height: auto;
+     
+ }
+
+ h1 {
+  text-align: center;
+  margin-bottom: 80px;
+  color: #fbe675;
+  
+}
+#label1{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+#label3{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+#label3{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+.row {
+  margin-bottom: 150px;
+  width: auto;
+  height: auto;
+}
+  body {
+    background-color: #082a44;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .chart{
+    text-align: center;
+     margin: auto;
+     width: auto;
+     height: auto;
+     
+ }
+
+ h1 {
+  text-align: center;
+  margin-bottom: 80px;
+  color: #fbe675;
+  
+}
+
+#label1{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+#label3{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+#label3{
+     color: rgb(238, 225, 225);
+     text-align: center;
+  margin-bottom: 50px;
+}
+.row {
+  margin-bottom: 150px;
+  width: auto;
+  height: auto;
+}
+  body {
+    background-color: #082a44;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     </style>
-   
   </head>
   <body>
     <h1>Temperature display website</h1>
     <div class="container">
         <div class="row">
             <div class="col-6 chart">
+                
+                
+                <label for="start" id="label1"> ใส่วันที่: </label> 
+            
+                <input type="date" name="begin" placeholder="dd-mm-yyyy" 
+                value=""min="1997-01-01" max="2030-12-31"> 
                 <canvas id="myChart" width="1000" height="500"></canvas>
                 <button type="button" class="btn btn-primary">ย้อนกลับ</button>
-                <button type="button" class="btn btn-danger">ถัดไป</button>
+                <button type="button" class="btn btn-danger"  id="#chart">ถัดไป</button>
             </div>
-            
         </div>
         <div class="row">
             <div class="col-6 chart">
+                <label for="start" id="label2"> ใส่วันที่: </label> 
+                <input type="date" name="begin" placeholder="dd-mm-yyyy"
+                 value=""min="1997-01-01" max="2030-12-31"> 
                 <canvas id="myChart3" width="500" height="400"></canvas>
                 <button type="button" class="btn btn-primary">ย้อนกลับ</button>
                 <button type="button" class="btn btn-danger">ถัดไป</button>
             </div>
             <div class="col-6 chart">
+                <label for="start" id="label3"> ใส่วันที่: </label> 
+            
+                <input type="date" name="begin" placeholder="dd-mm-yyyy" 
+                value=""min="1997-01-01" max="2030-12-31"> 
                 <canvas id="myChart4" width="500" height="400"></canvas>
                 <button type="button" class="btn btn-primary">ย้อนกลับ</button>
                 <button type="button" class="btn btn-danger">ถัดไป</button>
@@ -62,76 +218,76 @@ h1 {
     
     
 <script>
+ let index = 0;
+  let index2 = 0;
+  let index3 = 0;
 
-let result = [];
-let index = 0;
-let index2 = 0;
-let index3 = 0;
+  let d = 7;
+  let h = 30 * 4;
+  let result = [];
+  getdata()
 
-let d = 7208;
-let h = 7208 * 4;
-gendata()
+  function getdata() {
+    fetch('http://localhost:4000/temps')
+      .then(function (response) {
+        return response.json() // แปลงข้อมูลที่ได้เป็น json
+      })
+      .then(function (data) {
+        console.log(data);
+        result = data
 
+        let cout = index + 24
+        let temp = []
+        let date = []
+        let time = []
 
-function gendata(){
-fetch('http://localhost:4000/temps')
-    .then(function(response){
-        return response.json()
-    })
+        let temp2 = []
+        let date2 = []
+        let time2 = []
 
-.then(function (data){
-    console.log(data);
-    result = data
-
-    let count = index + 100
-    let temp = []
-    let date = []
-
-    let temp2 = []
-    let date2 = []
-
-    let temp3 = []
-    let date3 = []
-
-    for(index; index < count; index++){
-        if(index === result.length){break;}
-        temp.push(result[index].temp);
-        data.push(result[index].date);
-    }
-
-    for(index2; index2 < count; index2++){
-        if (index2 * d >= result.length){break;}
-        temp2.push(result[index2 * d].temp);
-        date2.push(result[index2 * d].date);
-
-    }
-
-    for(index3; index3 < count; index3++){
-        if (index3 * d >= result.length){break;}
-        temp3.push(result[index3 * d].temp);
-        date3.push(result[index3 * d].date);
-
-    }
+        let temp3 = []
+        let date3 = []
+        let time3 = []
 
 
+        for (index; index < cout; index++) {
+          if (index === result.length) { break; }
+          temp.push(result[index].temp);
+          time.push(result[index].time);
+        }
 
-let labels1 = ['00.00', '00.15','00.30','00.45','01.00','01.15','01.30','01.45','02.00','02.15','02.30','02.45','03.00','03.15','03.30','03.45','04.00','04.15','04.30','04.45','05.00'];
-let data1 =  [83, 67, 66, 61, 47, 187,200,250,300,187,200,250,300];
-let d1 = temp;
-let colors1 = ['#49A9EA', '#36CAAB','#36CAAB','#36CAAB'];
+
+        for (index2; index2 < cout; index2++) {
+          if (index2 * d >= result.length) { break; }
+          temp2.push(result[index2 * d].temp);
+          time2.push(result[index2 * d].time);
+        }
+
+
+        for (index3; index3 < cout; index3++) {
+          if (index3 * h >= result.length) { break; }
+          temp3.push(result[index3 * h].temp);
+          time3.push(result[index3 * h].time);
+        }
+        
+
+
 
 let myDoughnutChart = document.getElementById("myChart").getContext('2d');
 
 let chart1 = new Chart(myDoughnutChart, {
     type: 'line',
+
     data: {
-        labels: ['00.00', '00.15','00.30','00.45','01.00','01.15','01.30','01.45','02.00','02.15','02.30','02.45','03.00','03.15','03.30','03.45','04.00','04.15','04.30','04.45','05.00'],
+       labels: time,  
         datasets: [ {
            
-            backgroundColor: ['#49A9EA', '#36CAAB','#49A9EA', '#36CAAB','#36CAAB','#36CAAB'],
-            data: d1
+           backgroundColor: "#9D48DB",
+           pointBorderColor: "#fff",
+            data: temp
         }]
     },
+
     options: {
         title: {
             text: "Realtime",
@@ -139,7 +295,7 @@ let chart1 = new Chart(myDoughnutChart, {
         },
          series: [{
             name: 'sales',
-            data:  date
+            data:  temp
           }],
     }
 });
@@ -152,23 +308,15 @@ let chart3 = new Chart(myChart3, {
     data: {
         labels: labels3,
         datasets: [
-         // {
-          //  label: 'Messi',
-           // fill: true,
-           // backgroundColor: "rgba(179, 181, 198, 0.2)",
-           // borderColor: "rgba(179, 181, 198, 1)",
-          //  pointBorderColor: "#fff",
-          //  pointBackgroundColor: "rgba(179, 181, 198, 1)",
-           // data: [50, 12, 55, 7, 29]
-         // },
+        
           {
-            label: 'Ronaldo',
+         //   label: 'Ronaldo',
             fill: true,
             backgroundColor: "rgba(255, 99, 132, 0.2)",
             borderColor: "rgba(255, 99, 132, 1)",
             pointBorderColor: "#fff",
             pointBackgroundColor: "rgba(255, 99, 132, 1)",
-            data:  date2
+            data:  temp2
           }
         ]
     },
@@ -181,19 +329,22 @@ let chart3 = new Chart(myChart3, {
 });
 
 
+
+
 let labels4 = ['Week1', 'Week2', 'Week3', 'Week4' ];
-let data4 = [83, 67, 66, 61, 47, 187];
-let colors4 = ['#49A9EA', '#36CAAB', '#34495E', '#B370CF', '#AC5353', '#CFD4D8'];
+//let data4 = [83, 67, 66, 61, 47, 187];
+//let colors4 = ['#49A9EA', '#36CAAB', '#34495E', '#B370CF', '#AC5353', '#CFD4D8'];
 
 let myChart4 = document.getElementById("myChart4").getContext('2d');
 
 let chart4 = new Chart(myChart4, {
     type: 'line',
     data: {
-        labels: date3,
+        labels: labels4,
         datasets: [ {
-            data: date3,
-            backgroundColor: colors4
+            data: temp3,
+            pointBorderColor: "#fff",
+            backgroundColor:  "#AC5353",
         }]
     },
     options: {
@@ -203,12 +354,81 @@ let chart4 = new Chart(myChart4, {
         }
     }
    });
-
-
       });
-
-
     }
+
+/*--------------------------------------ส่วนปุ่มกด----------------------------------------*/
+
+
+function nextdata() {
+    let cout = index + 50
+    let temp = []
+    let time = []
+    for (index; index < cout; index++) {
+      if (index === result.length) { break; }
+      temp.push(result[index].temp);
+      time.push(result[index].time);
+    }
+
+   
+    let chart1 = new Chart(myDoughnutChart, {
+    type: 'line',
+
+    data: {
+       labels: time,  
+        datasets: [ {
+           backgroundColor: "#9D48DB",
+           pointBorderColor: "#fff",
+            data: temp
+        }]
+    },
+
+    options: {
+        title: {
+            text: "Realtime",
+            display: true
+        },
+         series: [{
+            name: 'sales',
+            data:  temp
+          }],
+    } 
+}
+);
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+  }
+
+
+
+
+
+
+  function backdata() {
+    let cout = index - 50
+    let windSpeed = []
+    let timeStemp = []
+    for (index; index > cout; index--) {
+      if (index === 0) { break; }
+      windSpeed.push(result[index].windSpeed);
+      timeStemp.push(result[index].timeStemp);
+    }
+    var options = {
+      chart: {
+        type: 'line'
+      },
+      series: [{
+        name: 'sales',
+        data: windSpeed
+      }],
+      xaxis: {
+        categories: timeStemp
+      }
+    }
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+  }
+
 
     </script>
   </body>

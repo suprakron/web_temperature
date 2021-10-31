@@ -4,7 +4,22 @@ const schema = new mongoose.Schema({
     date :{type:String, required:true},
     time :{type:String, required:true},
     temp :{type:String, required:true},
-    //date : {type : Date, default : Date.now()}, year : {type : Number, required : true}, mouth : {type : Number, required : true},day : {type : Number, required : true},
+})
+
+const temp = mongoose.model("Temp", schema)
+module.exports = temp //เก็บไว้ที่ตัวแปร
+
+
+
+
+
+
+
+
+
+
+
+//date : {type : Date, default : Date.now()}, year : {type : Number, required : true}, mouth : {type : Number, required : true},day : {type : Number, required : true},
       //day : {type : Number, required : true},
      //week : {type : Number, required : true}, 
      //mouth : {type : Number, required : true},   //สร้างตัวแปรขึ้นมาเพื่อให้มันเรียกใช้โดยใช้ตัวเลขในการเรียก type number เรียกใช้วัน แยกเป็น วัน วีค เดือน
@@ -13,7 +28,3 @@ const schema = new mongoose.Schema({
     //time : {type : String, required: true},  
    
 // temp : {type : Number, required : true},
-})
-
-const temp = mongoose.model("Temp", schema)
-module.exports = temp //เก็บไว้ที่ตัวแปร
